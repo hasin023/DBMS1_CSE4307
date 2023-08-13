@@ -26,11 +26,11 @@ def append_new_line(fileName, textToAppend):
 
 
 def Check_Data(stuID, GPA, Sem):
-    if GPA < 0 or GPA > 4:
+    if GPA < 2.50 or GPA > 4.00:
         return False
     if Sem < 1 or Sem > 8:
         return False
-    if len(stuID) < 2:
+    if len(stuID) > 11:
         return False
 
     return True
