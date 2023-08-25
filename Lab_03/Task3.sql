@@ -1,0 +1,81 @@
+-- DOCTORS
+
+INSERT INTO DOCTOR VALUES (
+    'MR. X',
+    'CS',
+    1500
+);
+
+INSERT INTO DOCTOR VALUES (
+    'MR. Y',
+    'GS',
+    2000
+);
+
+INSERT INTO DOCTOR VALUES (
+    'MR. A',
+    'IM',
+    1000
+);
+
+INSERT INTO DOCTOR VALUES (
+    'MR. B',
+    'ER',
+    1200
+);
+
+-- PATIENTS
+
+INSERT INTO PATIENT VALUES (
+    'P-101',
+    'A',
+    'DHK'
+);
+
+INSERT INTO PATIENT VALUES (
+    'P-102',
+    'B',
+    'KHL'
+);
+
+INSERT INTO PATIENT VALUES (
+    'P-103',
+    'C',
+    'DHK'
+);
+
+INSERT INTO PATIENT VALUES (
+    'P-104',
+    'D',
+    'KHL'
+);
+
+-- APPOINTMENT_INFO
+
+INSERT INTO APPOINTMENT_INFO VALUES (
+    'P-101',
+    'MR. A',
+    'IM',
+    DATE '2083-10-21'
+);
+
+INSERT INTO APPOINTMENT_INFO VALUES (
+    'P-102',
+    'MR. B',
+    'ER',
+    DATE '3012-04-01'
+);
+
+INSERT INTO APPOINTMENT_INFO VALUES (
+    'P-103',
+    'MR. X',
+    'CS',
+    DATE '1983-08-13'
+);
+
+INSERT INTO APPOINTMENT_INFO VALUES (
+    'P-104',
+    'MR. Y',
+    'GS',
+    DATE '2023-12-01'
+);
