@@ -56,26 +56,26 @@ INSERT INTO APPOINTMENT_INFO VALUES (
     'P-101',
     'MR. A',
     'IM',
-    DATE '2083-10-21'
+    TO_DATE ('2023-08-29', 'YYYY-MM-DD')
 );
 
 INSERT INTO APPOINTMENT_INFO VALUES (
     'P-102',
     'MR. B',
     'ER',
-    DATE '3012-04-01'
+    TO_DATE ('2023-08-29', 'YYYY-MM-DD')
 );
 
 INSERT INTO APPOINTMENT_INFO VALUES (
     'P-103',
     'MR. X',
     'CS',
-    DATE '1983-08-13'
+    TO_DATE ('2023-08-28', 'YYYY-MM-DD')
 );
 
 INSERT INTO APPOINTMENT_INFO VALUES (
     'P-104',
     'MR. Y',
     'GS',
-    DATE '2023-12-01'
+    TO_DATE ('2023-08-28', 'YYYY-MM-DD')
 );
