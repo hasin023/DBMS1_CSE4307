@@ -237,3 +237,39 @@ WHERE
     );
 
 -- TASK 13
+
+SELECT
+    MOV_TITLE
+FROM
+    MOVIE
+WHERE
+    MOV_ID IN (
+        SELECT
+            MOV_ID
+        FROM
+            CASTS
+        WHERE
+            ACT_ID NOT IN (
+                SELECT
+                    ACT_ID
+                FROM
+                    CASTS
+                WHERE
+                    MOV_ID IN (
+                        SELECT
+                            MOV_ID
+                        FROM
+                            CASTS
+                        WHERE
+                            ACT_ID IN (
+                                SELECT
+                                    ACT_ID
+                                FROM
+                                    ACTOR
+                                WHERE
+                                    ACT_FIRSTNAME = 'James'
+                                    AND ACT_LASTNAME = 'Cameron'
+                            )
+                    )
+            )
+    );
