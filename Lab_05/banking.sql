@@ -1,0 +1,433 @@
+DROP TABLE DEPOSITOR CASCADE CONSTRAINTS;
+
+DROP TABLE BORROWER CASCADE CONSTRAINTS;
+
+DROP TABLE ACCOUNT CASCADE CONSTRAINTS;
+
+DROP TABLE LOAN CASCADE CONSTRAINTS;
+
+DROP TABLE CUSTOMER CASCADE CONSTRAINTS;
+
+DROP TABLE BRANCH CASCADE CONSTRAINTS;
+
+CREATE TABLE BRANCH (
+    BRANCH_NAME VARCHAR(15) NOT NULL,
+    BRANCH_CITY VARCHAR(15) NOT NULL,
+    ASSETS NUMBER NOT NULL,
+    PRIMARY KEY(BRANCH_NAME)
+);
+
+CREATE TABLE CUSTOMER (
+    CUSTOMER_NAME VARCHAR(15) NOT NULL,
+    CUSTOMER_STREET VARCHAR(12) NOT NULL,
+    CUSTOMER_CITY VARCHAR(15) NOT NULL,
+    PRIMARY KEY(CUSTOMER_NAME)
+);
+
+CREATE TABLE ACCOUNT (
+    ACCOUNT_NUMBER VARCHAR(15) NOT NULL,
+    BRANCH_NAME VARCHAR(15) NOT NULL,
+    ACC_OPENING_DATE DATE,
+    BALANCE NUMBER NOT NULL,
+    PRIMARY KEY(ACCOUNT_NUMBER),
+    FOREIGN KEY(BRANCH_NAME) REFERENCES BRANCH(BRANCH_NAME)
+);
+
+CREATE TABLE LOAN (
+    LOAN_NUMBER VARCHAR(15) NOT NULL,
+    BRANCH_NAME VARCHAR(15) NOT NULL,
+    LOAN_DATE DATE,
+    AMOUNT NUMBER NOT NULL,
+    PRIMARY KEY(LOAN_NUMBER),
+    FOREIGN KEY(BRANCH_NAME) REFERENCES BRANCH(BRANCH_NAME)
+);
+
+CREATE TABLE DEPOSITOR (
+    CUSTOMER_NAME VARCHAR(15) NOT NULL,
+    ACCOUNT_NUMBER VARCHAR(15) NOT NULL,
+    PRIMARY KEY(CUSTOMER_NAME, ACCOUNT_NUMBER),
+    FOREIGN KEY(ACCOUNT_NUMBER) REFERENCES ACCOUNT(ACCOUNT_NUMBER),
+    FOREIGN KEY(CUSTOMER_NAME) REFERENCES CUSTOMER(CUSTOMER_NAME)
+);
+
+CREATE TABLE BORROWER (
+    CUSTOMER_NAME VARCHAR(15) NOT NULL,
+    LOAN_NUMBER VARCHAR(15) NOT NULL,
+    PRIMARY KEY(CUSTOMER_NAME, LOAN_NUMBER),
+    FOREIGN KEY(CUSTOMER_NAME) REFERENCES CUSTOMER(CUSTOMER_NAME),
+    FOREIGN KEY(LOAN_NUMBER) REFERENCES LOAN(LOAN_NUMBER)
+);
+
+/* populate relations */
+
+INSERT INTO CUSTOMER VALUES (
+    'Jones',
+    'Main',
+    'Harrison'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Smith',
+    'Main',
+    'Rye'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Hayes',
+    'Main',
+    'Harrison'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Curry',
+    'North',
+    'Rye'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Lindsay',
+    'Park',
+    'Pittsfield'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Turner',
+    'Putnam',
+    'Stamford'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Williams',
+    'Nassau',
+    'Princeton'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Adams',
+    'Spring',
+    'Pittsfield'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Johnson',
+    'Alma',
+    'Palo Alto'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Glenn',
+    'Sand Hill',
+    'Woodside'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Brooks',
+    'Senator',
+    'Brooklyn'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Green',
+    'Walnut',
+    'Stamford'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Jackson',
+    'University',
+    'Salt Lake'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'Majeris',
+    'First',
+    'Rye'
+);
+
+INSERT INTO CUSTOMER VALUES (
+    'McBride',
+    'Safety',
+    'Rye'
+);
+
+INSERT INTO BRANCH VALUES (
+    'Downtown',
+    'Brooklyn',
+    900000
+);
+
+INSERT INTO BRANCH VALUES (
+    'Redwood',
+    'Palo Alto',
+    2100000
+);
+
+INSERT INTO BRANCH VALUES (
+    'Perryridge',
+    'Horseneck',
+    1700000
+);
+
+INSERT INTO BRANCH VALUES (
+    'Mianus',
+    'Horseneck',
+    400200
+);
+
+INSERT INTO BRANCH VALUES (
+    'Round Hill',
+    'Horseneck',
+    8000000
+);
+
+INSERT INTO BRANCH VALUES (
+    'Pownal',
+    'Bennington',
+    400000
+);
+
+INSERT INTO BRANCH VALUES (
+    'North Town',
+    'Rye',
+    3700000
+);
+
+INSERT INTO BRANCH VALUES (
+    'Brighton',
+    'Brooklyn',
+    7000000
+);
+
+INSERT INTO BRANCH VALUES (
+    'Central',
+    'Rye',
+    400280
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-101',
+    'Downtown',
+    TO_DATE('2009-01-09', 'YYYY-MM-DD'),
+    1500
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-215',
+    'Mianus',
+    TO_DATE('2011-07-19', 'YYYY-MM-DD'),
+    1700
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-102',
+    'Perryridge',
+    TO_DATE('2019-03-04', 'YYYY-MM-DD'),
+    1500
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-305',
+    'Round Hill',
+    TO_DATE('2010-03-18', 'YYYY-MM-DD'),
+    350
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-201',
+    'Perryridge',
+    TO_DATE('2009-09-29', 'YYYY-MM-DD'),
+    9000
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-222',
+    'Redwood',
+    TO_DATE('2012-04-20', 'YYYY-MM-DD'),
+    700
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-217',
+    'Brighton',
+    TO_DATE('2016-05-18', 'YYYY-MM-DD'),
+    1750
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-333',
+    'Central',
+    TO_DATE('2013-08-24', 'YYYY-MM-DD'),
+    850
+);
+
+INSERT INTO ACCOUNT VALUES (
+    'A-444',
+    'North Town',
+    TO_DATE('2018-11-11', 'YYYY-MM-DD'),
+    625
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Johnson',
+    'A-111'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Smith',
+    'A-215'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Hayes',
+    'A-102'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Hayes',
+    'A-101'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Turner',
+    'A-305'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Johnson',
+    'A-201'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Jones',
+    'A-217'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Lindsay',
+    'A-222'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Majeris',
+    'A-333'
+);
+
+INSERT INTO DEPOSITOR VALUES (
+    'Smith',
+    'A-444'
+);
+
+INSERT INTO LOAN VALUES (
+    'L-17',
+    'Downtown',
+    TO_DATE('2009-01-09', 'YYYY-MM-DD'),
+    1000
+);
+
+INSERT INTO LOAN VALUES (
+    'L-23',
+    'Redwood',
+    TO_DATE('2009-09-29', 'YYYY-MM-DD'),
+    2000
+);
+
+INSERT INTO LOAN VALUES (
+    'L-15',
+    'Perryridge',
+    TO_DATE('2010-03-18', 'YYYY-MM-DD'),
+    1500
+);
+
+INSERT INTO LOAN VALUES (
+    'L-14',
+    'Downtown',
+    TO_DATE('2010-03-18', 'YYYY-MM-DD'),
+    1500
+);
+
+INSERT INTO LOAN VALUES (
+    'L-93',
+    'Mianus',
+    TO_DATE('2016-05-18', 'YYYY-MM-DD'),
+    500
+);
+
+INSERT INTO LOAN VALUES (
+    'L-11',
+    'Round Hill',
+    TO_DATE('2012-04-20', 'YYYY-MM-DD'),
+    900
+);
+
+INSERT INTO LOAN VALUES (
+    'L-16',
+    'Perryridge',
+    TO_DATE('2011-07-19', 'YYYY-MM-DD'),
+    1300
+);
+
+INSERT INTO LOAN VALUES (
+    'L-20',
+    'North Town',
+    TO_DATE('2013-08-24', 'YYYY-MM-DD'),
+    7500
+);
+
+INSERT INTO LOAN VALUES (
+    'L-21',
+    'Central',
+    TO_DATE('2019-03-04', 'YYYY-MM-DD'),
+    570
+);
+
+INSERT INTO BORROWER VALUES (
+    'Jones',
+    'L-17'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Smith',
+    'L-23'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Hayes',
+    'L-15'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Jackson',
+    'L-14'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Curry',
+    'L-93'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Smith',
+    'L-11'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Williams',
+    'L-27'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Adams',
+    'L-16'
+);
+
+INSERT INTO BORROWER VALUES (
+    'McBride',
+    'L-20'
+);
+
+INSERT INTO BORROWER VALUES (
+    'Smith',
+    'L-21'
+);
+
+COMMIT;
