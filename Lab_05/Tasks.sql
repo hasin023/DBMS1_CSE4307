@@ -49,7 +49,38 @@ ORDER BY
     COUNT DESC;
 
 -- Task 04
--- TODO
+SELECT
+    ABS(MONTHS_BETWEEN( (
+        SELECT
+            MAX(ACC_OPENING_DATE)
+        FROM
+            ACCOUNT
+        WHERE
+            ACCOUNT_NUMBER IN (
+                SELECT
+                    ACCOUNT_NUMBER
+                FROM
+                    DEPOSITOR
+                WHERE
+                    CUSTOMER_NAME = 'Smith'
+            )
+    ), (
+        SELECT
+            MAX(LOAN_DATE)
+        FROM
+            LOAN
+        WHERE
+            LOAN_NUMBER IN (
+                SELECT
+                    LOAN_NUMBER
+                FROM
+                    BORROWER
+                WHERE
+                    CUSTOMER_NAME = 'Smith'
+            )
+    ) )) AS MONTH
+FROM
+    DUAL;
 
 -- Task 05
 SELECT
@@ -94,41 +125,49 @@ WHERE
     );
 
 -- TASK 07
-
 SELECT
-    BRANCH_CITY
+    BRANCH_CITY,
+    AVG(AMOUNT)
 FROM
+    LOAN,
     BRANCH
 WHERE
-    BRANCH_NAME IN (
-        SELECT
-            BRANCH_NAME
-        FROM
-            LOAN
-        WHERE
-            BRANCH_CITY NOT IN (
-                SELECT
-                    BRANCH_CITY
-                FROM
-                    BRANCH
-                WHERE
-                    BRANCH_NAME IN (
-                        SELECT
-                            BRANCH_NAME
-                        FROM
-                            LOAN
-                        HAVING
-                            AVG(AMOUNT) > 1500
-                        GROUP BY
-                            BRANCH_NAME
-                    )
-            )
-    )
+    LOAN.BRANCH_NAME = BRANCH.BRANCH_NAME
 GROUP BY
-    BRANCH_CITY;
+    BRANCH_CITY
+HAVING
+    AVG(AMOUNT) > 1500;
 
 -- Task 08
--- TODO THIS
+SELECT
+    CUSTOMER_NAME
+    || ' Eligible' AS CUSTOMER_NAME
+FROM
+    DEPOSITOR
+WHERE
+    ACCOUNT_NUMBER IN (
+        SELECT
+            ACCOUNT_NUMBER
+        FROM
+            ACCOUNT
+        WHERE
+            BALANCE >= (
+                SELECT
+                    SUM(AMOUNT)
+                FROM
+                    LOAN
+                WHERE
+                    LOAN.BRANCH_NAME = ACCOUNT.BRANCH_NAME
+                    AND LOAN.LOAN_NUMBER IN (
+                        SELECT
+                            LOAN_NUMBER
+                        FROM
+                            BORROWER
+                        WHERE
+                            BORROWER.CUSTOMER_NAME = DEPOSITOR.CUSTOMER_NAME
+                    )
+            )
+    );
 
 -- Task 09
 SELECT
@@ -204,7 +243,9 @@ CREATE TABLE CUSTOMER_NEW AS
     SELECT
         *
     FROM
-        CUSTOMER;
+        CUSTOMER
+    WHERE
+        1 = 0;
 
 -- Task 12
 INSERT INTO CUSTOMER_NEW
@@ -217,20 +258,24 @@ INSERT INTO CUSTOMER_NEW
             SELECT
                 CUSTOMER_NAME
             FROM
-                BORROWER
+                DEPOSITOR
         )
         OR CUSTOMER_NAME IN (
             SELECT
                 CUSTOMER_NAME
             FROM
-                DEPOSITOR
+                BORROWER
         );
 
 -- Task 13
 ALTER TABLE CUSTOMER_NEW ADD STATUS VARCHAR2(15);
 
 -- Task 14
-
+UPDATE CUSTOMER_NEW
+SET
+    STATUS = (
+        SELECT CASE WHEN TOTAL_BALANCE > TOTAL_LOAN THEN 'IN SAVINGS' WHEN TOTAL_BALANCE < TOTAL_LOAN THEN 'IN LOAN' ELSE 'IN BREAKEVEN' END FROM ( SELECT CUSTOMER_NAME, SUM(BALANCE) AS TOTAL_BALANCE, SUM(AMOUNT) AS TOTAL_LOAN FROM ACCOUNT, LOAN WHERE ACCOUNT.BRANCH_NAME = LOAN.BRANCH_NAME AND ACCOUNT.ACCOUNT_NUMBER IN ( SELECT ACCOUNT_NUMBER FROM DEPOSITOR WHERE CUSTOMER_NAME = CUSTOMER_NEW.CUSTOMER_NAME ) AND LOAN.LOAN_NUMBER IN ( SELECT LOAN_NUMBER FROM BORROWER WHERE CUSTOMER_NAME = CUSTOMER_NEW.CUSTOMER_NAME ) GROUP BY CUSTOMER_NAME ) WHERE CUSTOMER_NAME = CUSTOMER_NEW.CUSTOMER_NAME
+    );
 
 -- Task 15
 SELECT
