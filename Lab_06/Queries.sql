@@ -1,0 +1,79 @@
+-- Queries to test the Privileges
+
+-- Login as STUDENT_USER
+
+CONNECT STUDENT_USER/student123;
+
+SELECT
+    *
+FROM
+    ADVISOR;
+
+SELECT
+    *
+FROM
+    COURSE;
+
+-- Login as TEACHER_USER
+
+CONNECT TEACHER_USER/teacher123;
+
+SELECT
+    *
+FROM
+    STUDENT;
+
+SELECT
+    *
+FROM
+    COURSE;
+
+-- Login as HOD_USER
+
+CONNECT HOD_USER/hod123;
+
+INSERT INTO INSTRUCTOR VALUES (
+    '99999',
+    'Buu',
+    'Science',
+    '50000'
+);
+
+COMMIT;
+
+SELECT
+    *
+FROM
+    DEPARTMENT;
+
+SELECT
+    *
+FROM
+    INSTRUCTOR;
+
+-- Login as ADMIN_USER
+
+CONNECT ADMIN_USER/admin123;
+
+SELECT
+    *
+FROM
+    DEPARTMENT;
+
+SELECT
+    *
+FROM
+    INSTRUCTOR;
+
+UPDATE DEPARTMENT
+SET
+    BUDGET = '75000'
+WHERE
+    DEPT_NAME = 'Biology';
+
+COMMIT;
+
+SELECT
+    *
+FROM
+    DEPARTMENT;
