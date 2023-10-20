@@ -56,16 +56,13 @@ FROM
 
 -- TASK 4
 SELECT
-    MOV_TITLE
+    M.MOVIE_TITLE
 FROM
-    MOVIE
+    MOVIE  M
+    LEFT JOIN RATING R
+    ON M.MOVIE_ID = R.MOVIE_ID
 WHERE
-    MOV_ID NOT IN (
-        SELECT
-            MOV_ID
-        FROM
-            RATING
-    );
+    R.REVIEW_STARS IS NULL;
 
 -- TASK 5
 SELECT
@@ -86,6 +83,54 @@ GROUP BY
     MOV_TITLE
 ORDER BY
     MIN_RATING DESC;
+
+-- Show the count of movies that got released in each month along with the month.
+SELECT
+    COUNT(*)                          AS MOVIES,
+    TO_CHAR(MOV_RELEASEDATE, 'Month') AS MONTH
+FROM
+    MOVIE
+GROUP BY
+    TO_CHAR(MOV_RELEASEDATE,
+    'Month')
+ORDER BY
+    MOVIES DESC;
+
+-- FIND THE MONTHS BETWEEN THE RELEASE DATE OF THE FIRST MOVIE AND THE LAST MOVIE DIRECTED BY ‘JAMES CAMERON’.
+
+SELECT
+    TO_CHAR(MOV_RELEASEDATE, 'Month') AS MONTH
+FROM
+    MOVIE
+WHERE
+    MOV_ID IN (
+        SELECT
+            MOV_ID
+        FROM
+            DIRECTOR,
+            MOVIE
+        WHERE
+            DIR_FIRSTNAME = 'James'
+            AND DIR_LASTNAME = 'Cameron'
+            AND MOVIE.DIR_ID = DIRECTOR.DIR_ID
+        ORDER BY
+            MOV_RELEASEDATE ASC
+    )
+    AND MOV_ID IN (
+        SELECT
+            MOV_ID
+        FROM
+            DIRECTOR,
+            MOVIE
+        WHERE
+            DIR_FIRSTNAME = 'James'
+            AND DIR_LASTNAME = 'Cameron'
+            AND MOVIE.DIR_ID = DIRECTOR.DIR_ID
+        ORDER BY
+            MOV_RELEASEDATE DESC
+    )
+GROUP BY
+    TO_CHAR(MOV_RELEASEDATE, 'Month');
 
 -- TASK 7
 SELECT
@@ -108,6 +153,48 @@ WHERE
                     RATING
             )
     );
+
+SELECT
+    M.MOVIE_TITLE,
+    AVG(R.REV_STARS) AS AVERAGE
+FROM
+    MOVIE  M
+    LEFT JOIN RATING R
+    ON M.MOVIE_ID = R.MOVIE_ID
+GROUP BY
+    M.MOVIE_TITLE;
+
+-- Show all the director name who directed movies having ratings greater than the average of ALL RATINGS WITH THE ’SR.’ PREFIX
+
+SELECT
+    DIR_FIRSTNAME,
+    DIR_LASTNAME
+FROM
+    DIRECTOR
+WHERE
+    DIR_ID IN (
+        SELECT
+            DIR_ID
+        FROM
+            MOVIE
+        WHERE
+            MOV_ID IN (
+                SELECT
+                    MOV_ID
+                FROM
+                    RATING
+                GROUP BY
+                    MOV_ID
+                HAVING
+                    AVG(REV_STARS) > (
+                        SELECT
+                            AVG(REV_STARS)
+                        FROM
+                            RATING
+                    )
+            )
+    )
+    AND DIR_FIRSTNAME LIKE 'Sr.%';
 
 -- TASK 8
 SELECT
