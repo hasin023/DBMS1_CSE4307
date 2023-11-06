@@ -1,3 +1,5 @@
+package Task1;
+
 import java.util.Date;
 
 public class Transaction {
@@ -38,10 +40,11 @@ public class Transaction {
 
     public String toString() {
         return "Transaction ID: " + T_ID + "\n" +
-               "Transaction Date: " + T_DATE + "\n" +
-               "Account ID: " + A_ID + "\n" +
-               "Transaction Amount: " + T_AMOUNT + "\n" +
-               "Transaction Type: " + T_TYPE + "\n";
+                "Transaction Date: " + T_DATE + "\n" +
+                "Account ID: " + A_ID + "\n" +
+                "Transaction Amount: " + T_AMOUNT + "\n" +
+                "Transaction Type: " + T_TYPE + "\n";
     }
 
 }
+

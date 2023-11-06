@@ -1,3 +1,5 @@
+package Task1;
+
 public class Account {
     private final int A_ID;
     private double balance;
@@ -18,3 +20,4 @@ public class Account {
         this.balance = balance;
     }
 }
+
