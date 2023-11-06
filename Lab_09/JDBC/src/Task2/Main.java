@@ -24,6 +24,7 @@ public class Main {
             preparedStatement1.setDouble (4 , 5000.0); ;
             preparedStatement1.setString (5 , "1") ;
             preparedStatement1.executeUpdate () ;
+            //CHECK => select * from TRANSACTIONS where T_ID=10001;
 
             PreparedStatement preparedStatement2 = connection.prepareStatement ("INSERT INTO TRANSACTIONS VALUES (? ,? ,? ,?, ?)") ;
             preparedStatement2.setInt (1 , 10005); ;
@@ -32,6 +33,8 @@ public class Main {
             preparedStatement2.setDouble (4 , 10000.0); ;
             preparedStatement2.setString (5 , "0") ;
             preparedStatement2.executeUpdate () ;
+            //CHECK => select * from TRANSACTIONS where T_ID=10005;
+
 
             System.out.println("Data inserted successfully!");
 
